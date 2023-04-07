@@ -7,7 +7,7 @@
 2. [Конфигурация VirtualBox через Vagrant](https://developer.hashicorp.com/vagrant/docs/providers/virtualbox/configuration).
 3. [Офф образы](https://app.vagrantup.com/bento).
 
-
+---
 
 ### Основные команды vagrant
 Выключить виртуальную машину с сохранением ее состояния (т.е., при следующем vagrant up будут запущены все процессы внутри, которые работали на момент вызова suspend):
@@ -50,7 +50,7 @@ vagrant destroy -f
 vagrant up --debug vagrant.log 2>&1
 ```
 
-
+---
 
 ### Vagrantfile
 ```bash
@@ -89,8 +89,11 @@ Vagrant.configure("2") do |config|
 		v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
 	end
 end
-```
+```  
 
+
+  
+---
 SSH access:
 	
   root / root
