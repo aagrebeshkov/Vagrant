@@ -94,7 +94,7 @@ end
 
   
 ---
-SSH access:
+SSH access (for images aagrebeshkov):
 	
   root / root
 	
