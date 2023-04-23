@@ -58,6 +58,18 @@ vagrant up --debug vagrant.log 2>&1
 ```
 <br>
 
+Выведет список проброшенных портов:
+```bash
+vagrant port
+```
+<br>
+
+Выведет список машин, вместе с состоянием и с дирекорией, в которой размещён Vagrantfile (можно выполнять из любой директории):
+```bash
+vagrant global-status
+```
+<br>
+
 ---
 
 ### Vagrantfile
@@ -229,7 +241,7 @@ end
 ```bash
 boxes = {
   'node01' => '1',
-  'node02' => '2'           ### попробовать убрать запятую
+  'node02' => '2'
 }
 
 Vagrant.configure("2") do |config|
