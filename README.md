@@ -112,6 +112,45 @@ end
 ```
 <br>
 
+или
+<br>
+
+```bash
+ISO = "aagrebeshkov/CentOS7"
+NET = "192.168.56."
+DOMAIN = ".alex.ru"
+HOST_PREFIX = "server"
+INVENTORY_PATH = "./inventory"
+
+servers = [
+  {
+    :hostname => HOST_PREFIX + "1" + DOMAIN,
+    :ip => NET + "11",
+    :ssh_host => "20011",
+    :ssh_vm => "22",
+    :ram => 1024,
+    :core => 1
+  }
+]
+
+Vagrant.configure(2) do |config|
+  config.vm.synced_folder ".", "/vagrant", disabled: false
+  servers.each do |machine|
+    config.vm.define machine[:hostname] do |node|
+      node.vm.box = ISO
+      node.vm.hostname = machine[:hostname]
+      node.vm.network "private_network", ip: machine[:ip]
+      node.vm.network :forwarded_port, guest: machine[:ssh_vm], host: machine[:ssh_host]
+      node.vm.provider "virtualbox" do |vb|
+        vb.customize ["modifyvm", :id, "--memory", machine[:ram]]
+        vb.customize ["modifyvm", :id, "--cpus", machine[:core]]
+        vb.name = machine[:hostname]
+      end      
+    end
+  end
+end
+```
+<br>
   
 ---
 SSH access (for images aagrebeshkov):
