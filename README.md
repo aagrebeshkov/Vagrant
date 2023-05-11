@@ -82,6 +82,9 @@ Vagrant.configure("2") do |config|
 	# Hostname
 	config.vm.hostname = "vagrant"
 
+	# Timeout to start VM
+	config.vm.boot_timeout = 600
+	
 	# Network bridge
 	config.vm.network "public_network", ip: "192.168.1.101"
 
@@ -135,6 +138,7 @@ servers = [
 
 Vagrant.configure(2) do |config|
   config.vm.synced_folder ".", "/vagrant", disabled: false
+  config.vm.boot_timeout = 600
   servers.each do |machine|
     config.vm.define machine[:hostname] do |node|
       node.vm.box = ISO
@@ -165,6 +169,7 @@ SSH access (for images aagrebeshkov):
 ### Конфигурирование нескольких машин по отдельности
 ```bash
 Vagrant.configure("2") do |config|
+  config.vm.boot_timeout = 600
   config.vm.provision "shell", inline: <<-SHELL
     apt-get install -y net-tools
     echo "192.168.50.1  node01" >> /etc/hosts
@@ -216,6 +221,7 @@ $mem_2 = "2048"
 $box_2 = "bento/ubuntu-20.04"
 
 Vagrant.configure("2") do |config|
+  config.vm.boot_timeout = 600
   config.vm.provision "shell" do |s|
     s.inline = "echo $1 $2 >> /etc/hosts; echo $3 $4 >> /etc/hosts; apt-get install -y net-tools"
     s.args   = $ip_1, $vm_1, $ip_2, $vm_2
@@ -255,6 +261,7 @@ end
 $number_vm = 2
 
 Vagrant.configure("2") do |config|
+  config.vm.boot_timeout = 600
   config.vm.provision "shell", inline: <<-SHELL
     apt-get install -y net-tools
   SHELL
@@ -284,6 +291,7 @@ boxes = {
 }
 
 Vagrant.configure("2") do |config|
+  config.vm.boot_timeout = 600
   config.vm.box = "bento/ubuntu-20.04"
 
   boxes.each do |name_vm, i|
