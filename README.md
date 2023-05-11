@@ -54,7 +54,7 @@ vagrant destroy -f
 
 Запуск с логированием debug:
 ```bash
-vagrant up --debug vagrant.log 2>&1
+vagrant up --debug > vagrant.log 2>&1
 ```
 <br>
 
