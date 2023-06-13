@@ -93,9 +93,13 @@ Vagrant.configure("2") do |config|
 
 	# Install pacages
 	config.vm.provision "shell", inline: <<-SHELL
-		echo "Upgrade system!!!"
 		sudo yum update -y
-		sudo yum install -y wget curl net-tools
+                sudo yum install -y wget curl net-tools telnet htop
+                
+                curl -fsSL https://get.docker.com -o get-docker.sh
+                sh get-docker.sh
+                ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/bin/
+                systemctl start docker & systemctl enable docker
 	SHELL
 
 	config.vm.provider "virtualbox" do |v|
