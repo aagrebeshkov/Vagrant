@@ -174,34 +174,40 @@ SSH access (for images aagrebeshkov):
 ```bash
 Vagrant.configure("2") do |config|
   config.vm.boot_timeout = 600
+  config.vm.box = "aagrebeshkov/CentOS7"
+  config.vm.synced_folder ".", "/vagrant", type: "rsync", rsync__exclude: ".vagrant/"
+
   config.vm.provision "shell", inline: <<-SHELL
-    apt-get install -y net-tools
-    echo "192.168.50.1  node01" >> /etc/hosts
-    echo "192.168.50.2  node02" >> /etc/hosts
+    sudo yum update -y
+    sudo yum install -y wget curl net-tools telnet htop
+
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sh get-docker.sh
+    ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/bin/
+    systemctl start docker & systemctl enable docker
+
+    systemctl stop firewalld && systemctl disable firewalld
+    
+    echo "192.168.50.1  pg-01" >> /etc/hosts
+    echo "192.168.50.2  pg-02" >> /etc/hosts
   SHELL
 
-  config.vm.define "node01" do |n1|
-    n1.vm.box = "bento/ubuntu-20.04"
-    n1.vm.hostname = "node01"
+  config.vm.define "pg-01" do |n1|
+    n1.vm.hostname = "pg-01"
     n1.vm.provider "virtualbox" do |v|
-      v.name = "node01"
+      v.name = "pg-01"
       v.memory = "2048"
-      v.cpus = 2
+      v.cpus = 1
     end
     n1.vm.network "private_network", ip: "192.168.50.1"
-
-    #n1.vm.provision "shell", inline: <<-SHELL
-    #  apt-get install -y apache2
-    #SHELL
   end
 
-  config.vm.define "node02" do |n2|
-    n2.vm.box = "bento/ubuntu-20.04"
-    n2.vm.hostname = "node02"
+  config.vm.define "pg-02" do |n2|
+    n2.vm.hostname = "pg-02"
     n2.vm.provider "virtualbox" do |v|
-      v.name = "node02"
+      v.name = "pg-02"
       v.memory = "2048"
-      v.cpus = 2
+      v.cpus = 1
     end
     n2.vm.network "private_network", ip: "192.168.50.2"
   end
