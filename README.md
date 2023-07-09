@@ -187,29 +187,27 @@ Vagrant.configure("2") do |config|
     systemctl start docker & systemctl enable docker
 
     systemctl stop firewalld && systemctl disable firewalld
-    
-    echo "192.168.50.1  pg-01" >> /etc/hosts
-    echo "192.168.50.2  pg-02" >> /etc/hosts
+
   SHELL
 
-  config.vm.define "pg-01" do |n1|
-    n1.vm.hostname = "pg-01"
+  config.vm.define "node01" do |n1|
+    n1.vm.hostname = "node01"
     n1.vm.provider "virtualbox" do |v|
-      v.name = "pg-01"
+      v.name = "node01"
       v.memory = "2048"
       v.cpus = 1
     end
-    n1.vm.network "private_network", ip: "192.168.50.1"
+    n1.vm.network "public_network", ip: "192.168.1.125", bridge: "en0: Wi-Fi"
   end
 
-  config.vm.define "pg-02" do |n2|
-    n2.vm.hostname = "pg-02"
+  config.vm.define "node02" do |n2|
+    n2.vm.hostname = "node02"
     n2.vm.provider "virtualbox" do |v|
-      v.name = "pg-02"
+      v.name = "node02"
       v.memory = "2048"
       v.cpus = 1
     end
-    n2.vm.network "private_network", ip: "192.168.50.2"
+    n2.vm.network "public_network", ip: "192.168.1.126", bridge: "en0: Wi-Fi"
   end
 end
 ```
